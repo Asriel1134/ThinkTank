@@ -1,22 +1,144 @@
 <template>
-	<view>
-		<text>我的</text>
+	<view class="VBox">
+		<view class="status_bar"></view>
+		<view class="user">
+			<image :src="userPhoto" class="userPhoto">
+			<view class="userInfo" v-if="!hasLogin">
+				<view class="userID" @tap="bindLogin">登录/注册</view>
+			</view>
+			<view class="userInfo" v-else>
+				<view class="userID">{{userInfo.username}}</view>
+				<!-- <text class="userCount">我贡献的词条数：{{entryCount}}</text> -->
+			</view>
+		</view>
+
+		<view class="userButtonArea">
+			<!-- 收藏 -->
+			<view id="userCollection" class="userButton">
+				<image src="/static/icon/ic_my_favorite.png">
+				<text>我的收藏</text>
+			</view>
+			<!-- 历史 -->
+			<view id="userHistory" class="userButton">
+				<image src="/static/icon/ic_my_history.png">
+				<text>我的足迹</text>
+			</view>
+			<!-- 词条 -->
+			<view id="userEntry" class="userButton">
+				<image src="/static/icon/ic_my_citiao.png">
+				<text>我的词条</text>
+			</view>
+			<!-- 消息 -->
+			<view id="userMessage" class="userButton">
+				<image src="/static/icon/ic_my_im.png">
+				<text>消息通知</text>
+			</view>
+		</view>
 	</view>
 </template>
 
 <script>
+	import {
+		mapState,
+	} from 'vuex';
+
 	export default {
+		computed: mapState([ 'hasLogin','userInfo']),
 		data() {
 			return {
-				
+				entryCount: "55",
+				userPhoto: ""
 			}
 		},
-		methods: {
+		onShow() {
+			if (this.hasLogin){
+				this.userPhoto = this.userInfo.photo;
+			} else {
+				this.userPhoto = "/static/icon/default.png"
+			}
+		},
+		onLoad() {
 			
+
+		},
+		methods: {
+			bindLogin() {
+				uni.navigateTo({
+					url: '/pages/login/login'
+				})
+			}
 		}
 	}
 </script>
 
 <style>
-
+.userButton image{
+	height: 30px;
+	width: 30px;
+	margin: 0 0 8px 0;
+}
+.userButton text{
+	font-size: 8px;
+	text-align: center;
+}
+.userButton{
+	width: 20%;
+	height: 75px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.userButtonArea{
+	padding: 5px 0;
+	width: 90%;
+	height: 221px;
+	background-color: #ffffff;
+	border-radius: 9px;
+	margin-top: 20px;
+	box-shadow: 0px 1px 3px rgba(158, 158, 158, 0.733);
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+}
+.userID{
+	font-size: 16px;
+	color: #FFFFFF;
+	font-weight: 550;
+}
+.userCount{
+	font-size: 11px;
+	color: rgb(219, 219, 219);
+}
+.userPhoto{
+	height: 55px;
+	width: 55px;
+	border-radius: 50px;
+	background-color: #6d91f2;
+	margin-right: 15px;
+}
+.userInfo{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+.user{
+	margin-top: 10px;
+	display: flex;
+	flex-direction: row;
+	width: 85%;
+	height: 55px;
+}
+.VBox{
+		background-color: #6d91f2;
+		width: 100%;
+		height: 110px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+	.status_bar {
+      	height: 5px;
+     	width: 100%;
+	}
 </style>

@@ -8,15 +8,15 @@
 		<!-- </view> -->
 		<!-- 搜索框 -->
 		<view class="search">
-			<input @focus="" type="text" class="searchText" :value="searchText">
+			<input @tap="openSearch" type="text" class="searchText" :value="searchText" disabled="true">
 		</view>
 
 		<view class="content">
 			<!-- 轮播图 -->
 			<swiper :indicator-dots="true" :autoplay="true" :interval="7000" :duration="800"  class="swiper" indicator-color="rgba(223, 223, 223, 0.733)" indicator-active-color="rgb(255, 255, 255)" circular="true">
 				<swiper-item v-for="(item ,index) in swiperInfo" :key="index">
-					<view class="swiper-item">
-						<image class="swiper-image" :src="item" mode="scaleToFill"></image>
+					<view class="swiper-item" :data-entryID="item.ID" @tap="openEntry">
+						<image class="swiper-image" :src="item.imageUrl" mode="scaleToFill"></image>
 					</view>
 				</swiper-item>
 			</swiper>
@@ -25,7 +25,7 @@
 		<view class="subtitle"><text>热搜词条</text></view>
 		<view class="content">
 			<view class="hotSearch">
-				<view v-for="(item,index) in hotSearchInfo" :key="index" style="height: 73px;">
+				<view v-for="(item,index) in hotSearchInfo" :key="index" style="height: 73px;"  :data-entryID="item.ID" @tap="openEntry">
 					<view id="hotSearchLine1">
 						<view id="line1Left">
 							<text class="rank" :style="[{color: rankColor[index].font, borderColor: rankColor[index].border}]">TOP.{{index+1}}</text>
@@ -45,7 +45,7 @@
 		<!-- 历史上的今天 -->
 		<view class="subtitle"><text>历史上的今天</text></view>
 		<view class="content">
-			<view class="history">
+			<view class="history"  :data-entryID="historyInfo.ID" @tap="openEntry">
 				<view id="hisLeft">
 					<view id="hisTitle">
 						<text>
@@ -58,17 +58,21 @@
 						</text>
 					</view>
 				</view>
-				<image :src="historyInfo.image" id="hisImage">
+				<image :src="historyInfo.imageUrl" id="hisImage">
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex';
+
 	export default {
 		data() {
 			return {
-				searchText : "大家正在搜索：双城之战",
 				rankColor: [{
 					font: "rgb(246,78,84)",
 					border: "rgb(239, 191, 189)",
@@ -80,71 +84,114 @@
 					border: "rgb(185, 196, 242)",
 				}],
 
+				searchText : "大家正在搜索：双城之战",
 
-				swiperInfo: ["/static/swiper/1.png", "/static/swiper/2.png"],
+				swiperInfo: [],
 
-				hotSearchInfo: [{
-					title: "党的十九届六中全会精神",
-					describe: "中共中央介绍十九届六种全会精神",
-					heat: 99
-				},{
-					title: "人民解放军空军建军节",
-					describe: "人民空军成立27周年",
-					heat: 98
-				},{
-					title: "神州十三号",
-					describe: "神州十三号航天员完成首次出舱活动",
-					heat: 97
-				},],
+				hotSearchInfo: [],
+				// {
+				// 	ID : "3",
+				// 	title: "党的十九届六中全会精神",
+				// 	describe: "中共中央介绍十九届六种全会精神",
+				// 	heat: 99
+				// },{
+				// 	ID : "4",
+				// 	title: "人民解放军空军建军节",
+				// 	describe: "人民空军成立27周年",
+				// 	heat: 98
+				// },{
+				// 	ID : "5",
+				// 	title: "神州十三号",
+				// 	describe: "神州十三号航天员完成首次出舱活动",
+				// 	heat: 97
+				// }
 
-				historyInfo: {
-					title: "1840年，法国著名法国雕塑艺术家奥古斯特·罗丹出生",
-					describe: "罗丹是法国著名雕塑家。他在欧洲雕塑史上的地位无人能及。",
-					image: "/static/his/his.jpeg"
-				}
+				historyInfo: {}
+				// ID : "6",
+				// 	title: "1840年，法国著名法国雕塑艺术家奥古斯特·罗丹出生",
+				// 	describe: "罗丹是法国著名雕塑家。他在欧洲雕塑史上的地位无人能及。",
+				// 	image: "/static/his/his.jpeg"
 			}
 		},
-		onLoad() {
+		onReady() {
 			uni.setNavigationBarColor({
 				frontColor: '#ffffff',  
     			backgroundColor: '#cf8f03',  
 			})
-
+		},
+		onLoad() {
+			uni.request({
+				url: `${this.$serverUrl}/index`,
+				method: 'GET',
+				data: {},
+				success: res => {
+					// this.searchText = res.data.searchText,
+					this.swiperInfo = res.data.swiper;
+					this.hotSearchInfo = res.data.hotSearch,
+					this.historyInfo = res.data.historyInfo
+				},
+				fail: () => {console.log(1);},
+				complete: () => {}
+			});
 		},
 		methods: {
-
+			...mapMutations(['logout']),
+			openSearch(e) {
+				uni.navigateTo({
+					url: '../search/search',
+					success: res => {},
+					fail: () => {},
+					complete: () => {}
+				});
+			},
+			openEntry(e) {
+				this.logout()
+				var entryID = e.currentTarget.dataset.entryid;
+				uni.navigateTo({
+					url: '../entry/entry?entryID=' + entryID,
+					success: res => {},
+					fail: () => {},
+					complete: () => {}
+				});
+			}
 		}
 	}
 </script>
 
 <style>
+	#hisLeft{
+		display: flex;
+		flex-direction: column;
+		justify-content: space-evenly;
+		width: 75%;
+	}
 	#hisTitle{
 		font-size: 16px;
-		margin: 18px 0px 18px 12px;
-		width: 250px;
+		margin: 0px 0px 0px 12px;
 	}
 	#hisDescribe{
 		font-size: 11px;
 		margin: 0 14px;
 		color: rgb(151, 151, 151);
-		width: 250px;
 		overflow: hidden;
  		white-space: nowrap;
  		text-overflow: ellipsis;
 	}
 	#hisImage{
-		height: 100px;
+		height: 85px;
+		width: 20%;
 		/* width: 100px; */
-		margin: 10px 10px 0 0;
+		margin: 10px 10px 10px 0;
 		border-radius: 5px;
 	}
 	.history{
 		width: 90%;
-		height: 120px;
+		height: 105px;
 		background-color: #ffffff;
 		border-radius: 9px;
 		/* border: 1px rgb(117, 117, 117) solid; */
 		margin-top: 8px;
+		margin-bottom: 15px;
 		box-shadow: 0px 1px 3px rgba(158, 158, 158, 0.733);
 
 		display: flex;
@@ -177,7 +224,7 @@
 	}
 	#heat{
 		display: flex;
-		background-image: url("/static/icon/heat.png");
+		background-image: url("/static/icon/ic_hot.png");
 		background-repeat: no-repeat;
 		background-size: 13px;
 		background-position: 0 16px;
@@ -215,7 +262,7 @@
 	.VBox{
 		background-color: #cf8f03;
 		width: 100%;
-		height: 195px;
+		height: 110px;
 	}
 	.status_bar {
       	height: 5px;
