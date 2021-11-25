@@ -3,23 +3,20 @@
 		<view class="status_bar"></view>
 
 		<view class="register">
-			<text class="registerTitle">注册</text>
+			<text class="registerTitle">修改密码</text>
 
 			<form class="registerForm" @submit="bindRegister">
 				<view class="input-view">
-					<input class="input mailInput" type="text" placeholder="请输入邮箱" name="mailValue" />
+					<input class="input passwordInput" password placeholder="请输入原密码" name="oldPasswordValue" />
 				</view>
 				<view class="input-view">
-					<input class="input usernameInput" placeholder="请输入用户名" name="usernameValue" />
+					<input class="input passwordInput" password placeholder="请输入新密码" name="passwordValue" />
 				</view>
 				<view class="input-view">
-					<input class="input passwordInput" password placeholder="请输入密码" name="passwordValue" />
-				</view>
-				<view class="input-view">
-					<input class="input passwordInput" password placeholder="请再次输入密码" name="passwordRepeatValue" />
+					<input class="input passwordInput" password placeholder="请再次输入新密码" name="passwordRepeatValue" />
 				</view>
 				<view class="button-view">
-					<button type="primary" :loading="loading" class="registerbutton" formType="submit">注册</button>
+					<button type="primary" :loading="loading" class="registerbutton" formType="submit">保存</button>
 				</view>
 			</form>
 		</view>
@@ -28,10 +25,12 @@
 
 <script>
 	import {
+		mapState,
         mapMutations,
     } from 'vuex';
 
 	export default {
+		computed: mapState([ 'hasLogin','userInfo']),
 		data() {
 			return {
 				loading: false
@@ -40,22 +39,10 @@
 		methods: {
 			bindRegister(e) {
 				this.loading = true;
-				let mail = e.detail.value.mailValue,
-                    password = e.detail.value.passwordValue,
+				let password = e.detail.value.passwordValue,
 					passwordRepeat = e.detail.value.passwordRepeatValue,
-					username = e.detail.value.usernameValue;
-
-				if (!/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/.test(mail)) {
-                    this.loading = false;
-					plus.nativeUI.toast("请输入正确的邮箱成功")
-                    return;
-                }
-
-				if (!/^[A-Za-z0-9\u4E00-\u9FA5]{1,10}$/.test(username)) {
-                    this.loading = false;
-					plus.nativeUI.toast("请输入长度不大于10的用户名，不包含特殊字符")
-                    return;
-                }
+					oldPassword = e.detail.value.oldPasswordValue,
+					mail = this.userInfo.mail;
 
 				if (!/^[A-Za-z0-9_!/*-@#]{6,16}$/.test(password)) {
                     this.loading = false;
@@ -70,23 +57,23 @@
                 }
 
 				uni.request({
-                    url: `${this.$serverUrl}/adduser`,
+                    url: `${this.$serverUrl}/rePassword`,
                     header: {
                         "Content-Type": "application/x-www-form-urlencoded"
                     },
                     data: {
                         "mail": mail,
-						"username": username,
-                        "password": password
+                        "password": oldPassword,
+						"newPassword": password
                     },
                     method: "POST",
                     success: (e) => {
-                        if (e.data.result == -1) {
-							plus.nativeUI.toast("邮箱已注册，请直接登录")
+                        if (e.data.result == -4) {
+							plus.nativeUI.toast("密码错误")
                             return;
                         }
                         if (e.data.result == 0) {
-                            this.login(e.data.userinfo);
+							plus.nativeUI.toast("保存成功")
                             uni.navigateBack();
                         } else {
 							plus.nativeUI.toast("error" + e.data.info)
@@ -166,7 +153,7 @@
 	.register{
 		padding: 5px 0;
 		width: 90%;
-		height: 420px;
+		height: 350px;
 		background-color: #ffffff;
 		border-radius: 9px;
 		margin-top: 40px;

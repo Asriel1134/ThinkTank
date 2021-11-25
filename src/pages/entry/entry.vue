@@ -1,7 +1,7 @@
 <template>
 	<view class="VBox">
 		<view class="status_bar"></view>
-		<text>{{entryID}}</text>
+		<text>{{title}}</text>
 	</view>
 </template>
 
@@ -9,7 +9,6 @@
 	export default {
 		data() {
 			return {
-				entryID : "",
 				title: "title",
 			}
 		},
@@ -19,21 +18,19 @@
 			})
 		},
 		onLoad: function(e){
-			this.entryID = e.entryID;
-			if (this.entryID == -1){
-				this.title = '百科';
-			} else{
-				// uni.request({
-				// 	url: '',
-				// 	method: 'GET',
-				// 	data: {},
-				// 	success: res => {
-				// 		this.title = res.title;
-				// 	},
-				// 	fail: () => {},
-				// 	complete: () => {}
-				// });
-			}
+			this.title = e.title;
+			uni.request({
+				url: `${this.$serverUrl}/getEntry`,
+				method: 'GET',
+				data: {
+					title: this.title
+				},
+				success: res => {
+					console.log(res)
+				},
+				fail: () => {},
+				complete: () => {}
+			});
 		},
 		methods: {
 			

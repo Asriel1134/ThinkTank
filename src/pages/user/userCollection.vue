@@ -1,6 +1,10 @@
 <template>
 	<view class="VBox">
 		<view class="status_bar"></view>
+
+		<view class="collection">
+
+		</view>
 	</view>
 </template>
 
@@ -13,7 +17,7 @@
 		computed: mapState(['userInfo']),
 		data() {
 			return {
-				entry: []
+				collection: []
 			}
 		},
 		onLoad() {

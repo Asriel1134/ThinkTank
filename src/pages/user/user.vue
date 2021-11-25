@@ -1,12 +1,15 @@
 <template>
 	<view class="VBox">
 		<view class="status_bar"></view>
-		<view class="user">
+		<view class="user" v-if="!hasLogin">
 			<image :src="userPhoto" class="userPhoto">
-			<view class="userInfo" v-if="!hasLogin">
+			<view class="userInfo">
 				<view class="userID" @tap="bindLogin">登录/注册</view>
 			</view>
-			<view class="userInfo" v-else>
+		</view>
+		<view class="user" v-else @tap="openUserConfig">
+			<image :src="userPhoto" class="userPhoto">
+			<view class="userInfo">
 				<view class="userID">{{userInfo.username}}</view>
 				<!-- <text class="userCount">我贡献的词条数：{{entryCount}}</text> -->
 			</view>
@@ -14,17 +17,17 @@
 
 		<view class="userButtonArea">
 			<!-- 收藏 -->
-			<view id="userCollection" class="userButton">
+			<view id="userCollection" class="userButton" @tap="openUserCollection">
 				<image src="/static/icon/ic_my_favorite.png">
 				<text>我的收藏</text>
 			</view>
 			<!-- 历史 -->
-			<view id="userHistory" class="userButton">
+			<view id="userHistory" class="userButton" @tap="openUserHistory">
 				<image src="/static/icon/ic_my_history.png">
 				<text>我的足迹</text>
 			</view>
 			<!-- 词条 -->
-			<view id="userEntry" class="userButton">
+			<view id="userEntry" class="userButton" @tap="openUserEntry">
 				<image src="/static/icon/ic_my_citiao.png">
 				<text>我的词条</text>
 			</view>
@@ -66,6 +69,32 @@
 				uni.navigateTo({
 					url: '/pages/login/login'
 				})
+			},
+			openUserConfig() {
+				uni.navigateTo({
+					url: '/pages/user/userConfig'
+				})
+			},
+			openUserCollection() {
+				if (this.hasLogin){
+					uni.navigateTo({
+						url: '/pages/user/userCollection'
+					})
+				}
+			},
+			openUserHistory() {
+				if (this.hasLogin){
+					uni.navigateTo({
+						url: '/pages/user/userHistory'
+					})	
+				}
+			},
+			openUserEntry() {
+				if (this.hasLogin){
+					uni.navigateTo({
+						url: '/pages/user/userEntry'
+					})	
+				}
 			}
 		}
 	}
@@ -130,15 +159,15 @@
 	height: 55px;
 }
 .VBox{
-		background-color: #6d91f2;
-		width: 100%;
-		height: 110px;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
-	.status_bar {
-      	height: 5px;
-     	width: 100%;
-	}
+	background-color: #6d91f2;
+	width: 100%;
+	height: 110px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+.status_bar {
+  	height: 5px;
+ 	width: 100%;
+}
 </style>

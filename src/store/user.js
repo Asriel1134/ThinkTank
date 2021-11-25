@@ -15,7 +15,7 @@ const store = new Vuex.Store({
             uni.setStorage({//将用户信息保存在本地  
                 key: 'userInfo',  
                 data: provider
-            })  
+            })
         },  
         logout(state) {//退出登录  
             state.hasLogin = false  
@@ -23,7 +23,10 @@ const store = new Vuex.Store({
             uni.removeStorage({  
                 key: 'userInfo'  
             })  
-        }  
+        },
+        updateUsername(newUsername){
+            state.userInfo.username = newUsername;
+        }
     }  
 })
 

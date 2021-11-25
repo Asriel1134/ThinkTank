@@ -46,19 +46,13 @@
 
 				if (!/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/.test(mail)) {
                     this.loading = false;
-                    uni.showModal({
-                        content: "请输入正确的邮箱",
-                        showCancel: false
-                    })
+					plus.nativeUI.toast("请输入正确的邮箱")
                     return;
                 }
 
 				if (!/^[A-Za-z0-9_!/*-@#]{6,16}$/.test(password)) {
                     this.loading = false;
-                    uni.showModal({
-                        content: "请输入6-16位密码，可包含大小写字母、数字及特殊字符_!/*-@#",
-                        showCancel: false
-                    })
+					plus.nativeUI.toast("请输入6-16位密码，可包含大小写字母、数字及特殊字符_!/*-@#")
                     return;
                 }
 
@@ -74,34 +68,22 @@
                     method: "POST",
                     success: (e) => {
 						if (e.data.result == -2) {
-                            uni.showModal({
-                                content: "用户名不存在，请先注册",
-                                showCancel: false
-                            });
+							plus.nativeUI.toast("用户名不存在，请先注册")
                             return;
                         }
                         if (e.data.result == -3) {
-                            uni.showModal({
-                                content: "用户名或密码错误",
-                                showCancel: false
-                            });
+							plus.nativeUI.toast("用户名或密码错误")
                             return;
                         }
                         if (e.data.result == 0) {
                             this.login(e.data.userinfo);
                             uni.navigateBack();
                         } else {
-                            uni.showModal({
-                                content: "error" + e.result.info,
-                                showCancel: false
-                            })
+							plus.nativeUI.toast("error" + e.result.info)
                         }
                     },
                     fail: (e) => {
-                        uni.showModal({
-                            content: "请求失败，请重试！",
-                            showCancel: false
-                        })
+						plus.nativeUI.toast("请求失败，请重试！")
                     },
                     complete: () => {
                         this.loading = false;

@@ -22,22 +22,11 @@
 			
 		},
 		methods: {
-			search(){
-				var entryID = '';
-
-				// uni.request({
-				// 	url: '',
-				// 	method: 'GET',
-				// 	data: {},
-				// 	success: res => {
-				// 		entryID = res.entryID;
-				// 	},
-				// 	fail: () => {},
-				// 	complete: () => {}
-				// });
+			search(e){
+				var title = e.detail.value;
 
 				uni.navigateTo({
-					url: '../entry/entry?entryID=' + entryID,
+					url: '../entry/entry?title=' + title,
 					success: res => {},
 					fail: () => {},
 					complete: () => {}

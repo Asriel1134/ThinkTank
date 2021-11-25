@@ -15,7 +15,7 @@
 			<!-- 轮播图 -->
 			<swiper :indicator-dots="true" :autoplay="true" :interval="7000" :duration="800"  class="swiper" indicator-color="rgba(223, 223, 223, 0.733)" indicator-active-color="rgb(255, 255, 255)" circular="true">
 				<swiper-item v-for="(item ,index) in swiperInfo" :key="index">
-					<view class="swiper-item" :data-entryID="item.ID" @tap="openEntry">
+					<view class="swiper-item" :data-title="item.title" @tap="openEntry">
 						<image class="swiper-image" :src="item.imageUrl" mode="scaleToFill"></image>
 					</view>
 				</swiper-item>
@@ -25,7 +25,7 @@
 		<view class="subtitle"><text>热搜词条</text></view>
 		<view class="content">
 			<view class="hotSearch">
-				<view v-for="(item,index) in hotSearchInfo" :key="index" style="height: 73px;"  :data-entryID="item.ID" @tap="openEntry">
+				<view v-for="(item,index) in hotSearchInfo" :key="index" style="height: 73px;"  :data-title="item.title" @tap="openEntry">
 					<view id="hotSearchLine1">
 						<view id="line1Left">
 							<text class="rank" :style="[{color: rankColor[index].font, borderColor: rankColor[index].border}]">TOP.{{index+1}}</text>
@@ -45,7 +45,7 @@
 		<!-- 历史上的今天 -->
 		<view class="subtitle"><text>历史上的今天</text></view>
 		<view class="content">
-			<view class="history"  :data-entryID="historyInfo.ID" @tap="openEntry">
+			<view class="history"  :data-title="historyInfo.title" @tap="openEntry">
 				<view id="hisLeft">
 					<view id="hisTitle">
 						<text>
@@ -145,10 +145,9 @@
 				});
 			},
 			openEntry(e) {
-				this.logout()
-				var entryID = e.currentTarget.dataset.entryid;
+				var title = e.currentTarget.dataset.title;
 				uni.navigateTo({
-					url: '../entry/entry?entryID=' + entryID,
+					url: '../entry/entry?title=' + title,
 					success: res => {},
 					fail: () => {},
 					complete: () => {}

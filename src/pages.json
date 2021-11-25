@@ -3,7 +3,7 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "百度百科",
+				"navigationBarTitleText": "ThinkTank",
 				"navigationBarTextStyle": "white",
 				"enablePullDownRefresh": false,
 				"app-plus": {
@@ -61,7 +61,73 @@
 		},{
 			"path": "pages/register/register",
 			"style": {
-				"navigationBarTitleText": "注册",
+				"navigationBarTitleText": "",
+				"navigationBarTextStyle": "white",
+                "navigationBarBackgroundColor": "#6d91f2",
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+		},{
+			"path": "pages/user/userConfig",
+			"style": {
+				"navigationBarTitleText": "设置",
+				"navigationBarTextStyle": "white",
+                "navigationBarBackgroundColor": "#6d91f2",
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+		},{
+			"path": "pages/user/modifyInfo",
+			"style": {
+				"navigationBarTitleText": "",
+				"navigationBarTextStyle": "white",
+                "navigationBarBackgroundColor": "#6d91f2",
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+		},{
+			"path": "pages/user/changePassword",
+			"style": {
+				"navigationBarTitleText": "",
+				"navigationBarTextStyle": "white",
+                "navigationBarBackgroundColor": "#6d91f2",
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+		},{
+			"path": "pages/user/userCollection",
+			"style": {
+				"navigationBarTitleText": "我的收藏",
+				"navigationBarTextStyle": "white",
+                "navigationBarBackgroundColor": "#6d91f2",
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+		},{
+			"path": "pages/user/userHistory",
+			"style": {
+				"navigationBarTitleText": "我的足迹",
+				"navigationBarTextStyle": "white",
+                "navigationBarBackgroundColor": "#6d91f2",
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+		},{
+			"path": "pages/user/userEntry",
+			"style": {
+				"navigationBarTitleText": "我的词条",
 				"navigationBarTextStyle": "white",
                 "navigationBarBackgroundColor": "#6d91f2",
 				"enablePullDownRefresh": false,
