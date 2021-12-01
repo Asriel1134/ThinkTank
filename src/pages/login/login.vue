@@ -8,7 +8,7 @@
 			<form class="loginForm" @submit="bindLogin">
 				<view class="input-view">
 					<input class="input mailInput" type="text" placeholder="请输入邮箱" name="mailValue" />
-				</view>
+				</view> 
 				<view class="input-view">
 					<input class="input passwordInput" password placeholder="请输入密码" name="passwordValue" />
 				</view>
