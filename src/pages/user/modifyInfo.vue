@@ -60,6 +60,7 @@
                     },
                     method: "POST",
                     success: (e) => {
+						console.log(e);
                         if (e.data.result == 0) {
 							this.login(e.data.userInfo);
 							plus.nativeUI.toast("保存成功")

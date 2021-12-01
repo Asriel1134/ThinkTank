@@ -58,9 +58,6 @@
 
 				uni.request({
                     url: `${this.$serverUrl}/rePassword`,
-                    header: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    },
                     data: {
                         "mail": mail,
                         "password": oldPassword,

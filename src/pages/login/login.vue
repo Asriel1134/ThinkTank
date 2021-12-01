@@ -67,7 +67,7 @@
                     },
                     method: "POST",
                     success: (e) => {
-						if (e.data.result == -2) {
+						if (e.data.result == -1) {
 							plus.nativeUI.toast("用户名不存在，请先注册")
                             return;
                         }

@@ -80,6 +80,8 @@
 					uni.navigateTo({
 						url: '/pages/user/userCollection'
 					})
+				} else {
+					plus.nativeUI.toast("请先登录")
 				}
 			},
 			openUserHistory() {
@@ -87,6 +89,8 @@
 					uni.navigateTo({
 						url: '/pages/user/userHistory'
 					})	
+				} else {
+					plus.nativeUI.toast("请先登录")
 				}
 			},
 			openUserEntry() {
@@ -94,6 +98,8 @@
 					uni.navigateTo({
 						url: '/pages/user/userEntry'
 					})	
+				} else {
+					plus.nativeUI.toast("请先登录")
 				}
 			}
 		}

@@ -16,7 +16,7 @@
 			<hr>
 			<view class="setting rePassword" @tap="openChangePassword">修改密码</view>
 			<hr>
-			<view class="setting rePhoto">修改头像</view>
+			<view class="setting rePhoto" @tap="openChangePhoto">修改头像</view>
 			<hr>
 			<view class="setting" @tap="bindlLogout">退出登录</view>
         </view>
@@ -59,6 +59,11 @@
 			openChangePassword() {
 				uni.navigateTo({
 					url: '/pages/user/changePassword'
+				})
+			},
+			openChangePhoto() {
+				uni.navigateTo({
+					url: '/pages/user/changePhoto'
 				})
 			}
 		}

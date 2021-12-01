@@ -135,6 +135,17 @@
 					"bounce": "none"
 				}
 			}
+		},{
+			"path": "pages/user/changePhoto",
+			"style": {
+				"navigationBarTitleText": "",
+				"navigationBarTextStyle": "white",
+                "navigationBarBackgroundColor": "#6d91f2",
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
 		}
     ],
 	"globalStyle": {
