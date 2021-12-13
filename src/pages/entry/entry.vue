@@ -1,8 +1,9 @@
 <template>
-	<view class="VBox">
-		<view class="status_bar"></view>
-		<text>{{title}}</text>
-	</view>
+  <view class="VBox">
+    <view class="status_bar"></view>
+    <!-- <text>{{title}}</text> -->
+    <rich-text :nodes="string"></rich-text>
+  </view>
 </template>
 
 <script>
@@ -10,6 +11,7 @@
 		data() {
 			return {
 				title: "title",
+				string: ""
 			}
 		},
 		onReady() {
@@ -39,13 +41,13 @@
 </script>
 
 <style>
-.VBox{
-	/* background-color: #6d91f2; */
-	width: 100%;
-	/* height: 195px; */
+.VBox {
+  /* background-color: #6d91f2; */
+  width: 100%;
+  /* height: 195px; */
 }
 .status_bar {
-  	height: 5px;
- 	width: 100%;
+  height: 5px;
+  width: 100%;
 }
 </style>
