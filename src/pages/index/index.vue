@@ -16,7 +16,7 @@
 			<swiper :indicator-dots="true" :autoplay="true" :interval="7000" :duration="800"  class="swiper" indicator-color="rgba(223, 223, 223, 0.733)" indicator-active-color="rgb(255, 255, 255)" circular="true">
 				<swiper-item v-for="(item ,index) in swiperInfo" :key="index">
 					<view class="swiper-item" :data-title="item.title" @tap="openEntry">
-						<image class="swiper-image" :src="item.imageUrl" mode="scaleToFill"></image>
+						<image class="swiper-image" :src="item.image" mode="aspectFill"></image>
 					</view>
 				</swiper-item>
 			</swiper>
@@ -58,9 +58,19 @@
 						</text>
 					</view>
 				</view>
-				<image :src="historyInfo.imageUrl" id="hisImage">
+				<image :src="historyInfo.image" id="hisImage" mode="aspectFill">
 			</view>
 		</view>
+
+		<view class="subtitle"><text>推荐</text></view>
+		<view v-for="(item ,index) in waterfall" :key="index" class="waterfallmain">
+			<view class="waterfallentry" :data-title="item.title" @tap="openEntry"> 
+				<view class="waterfalltitle"><text>{{item.title}}</text></view>
+				<view class="waterfalldescribe"><text>{{item.describe}}</text></view>
+				<view class="waterfalldate">创建日期: {{item.createdate}}</view>
+			</view>
+		</view>
+		<view v-if="randomLoading" class="loading">加载中……</view>
 	</view>
 </template>
 
@@ -73,6 +83,10 @@
 	export default {
 		data() {
 			return {
+				loading: true,
+
+				randomLoading: true,
+
 				rankColor: [{
 					font: "rgb(246,78,84)",
 					border: "rgb(239, 191, 189)",
@@ -84,40 +98,59 @@
 					border: "rgb(185, 196, 242)",
 				}],
 
-				searchText : "大家正在搜索：双城之战",
+				searchText : "",
 
 				swiperInfo: [],
 
 				hotSearchInfo: [],
-				// {
-				// 	ID : "3",
-				// 	title: "党的十九届六中全会精神",
-				// 	describe: "中共中央介绍十九届六种全会精神",
-				// 	heat: 99
-				// },{
-				// 	ID : "4",
-				// 	title: "人民解放军空军建军节",
-				// 	describe: "人民空军成立27周年",
-				// 	heat: 98
-				// },{
-				// 	ID : "5",
-				// 	title: "神州十三号",
-				// 	describe: "神州十三号航天员完成首次出舱活动",
-				// 	heat: 97
-				// }
 
-				historyInfo: {}
-				// ID : "6",
-				// 	title: "1840年，法国著名法国雕塑艺术家奥古斯特·罗丹出生",
-				// 	describe: "罗丹是法国著名雕塑家。他在欧洲雕塑史上的地位无人能及。",
-				// 	image: "/static/his/his.jpeg"
+				historyInfo: {},
+
+				waterfall: []
 			}
 		},
+		onPullDownRefresh() {
+			uni.request({
+				url: `${this.$serverUrl}/getRandomEntry`,
+				method: 'POST',
+				data: {},
+				success: res => {
+					this.waterfall = res.data.entry;
+				},
+				fail: () => {console.log(1);},
+				complete: () => {}
+			});
+			uni.request({
+				url: `${this.$serverUrl}/index`,
+				method: 'GET',
+				data: {},
+				success: res => {
+					// this.searchText = res.data.searchText,
+					this.swiperInfo = res.data.swiper;
+					this.hotSearchInfo = res.data.hotSearch,
+					this.historyInfo = res.data.historyInfo
+					this.searchText = "大家正在搜索：" + res.data.searchText
+				},
+				fail: () => {console.log(1);},
+				complete: () => {}
+			});
+			uni.stopPullDownRefresh()
+		},
+		onReachBottom() {
+			uni.request({
+				url: `${this.$serverUrl}/getRandomEntry`,
+				method: 'POST',
+				data: {},
+				success: res => {
+					this.waterfall.push(res.data.entry[0])
+					this.waterfall.push(res.data.entry[1])
+					this.waterfall.push(res.data.entry[2])
+				},
+				fail: () => {},
+				complete: () => {}
+			});
+		},
 		onReady() {
-			uni.setNavigationBarColor({
-				frontColor: '#ffffff',  
-    			backgroundColor: '#cf8f03',  
-			})
 		},
 		onLoad() {
 			uni.request({
@@ -129,6 +162,17 @@
 					this.swiperInfo = res.data.swiper;
 					this.hotSearchInfo = res.data.hotSearch,
 					this.historyInfo = res.data.historyInfo
+					this.searchText = "大家正在搜索：" + res.data.searchText
+				},
+				fail: () => {console.log(1);},
+				complete: () => {}
+			});
+			uni.request({
+				url: `${this.$serverUrl}/getRandomEntry`,
+				method: 'POST',
+				data: {},
+				success: res => {
+					this.waterfall = res.data.entry;
 				},
 				fail: () => {console.log(1);},
 				complete: () => {}
@@ -158,6 +202,64 @@
 </script>
 
 <style>
+	.loading{
+		text-align: center;
+		padding: 5px 0 10px 0;
+		font-size: 10px;
+	}
+	.waterfalldescribe{
+		font-size: 12px;
+		color: rgb(116, 116, 116);
+		max-height: 35px;
+		margin-left: 3%;
+		width: 94%;
+		text-overflow: ellipsis;
+		overflow: hidden;
+	}
+	.waterfalldate{
+		font-size: 10px;
+		margin-left: 3%;
+		color: rgb(151, 151, 151);
+		margin-bottom: 3px;
+	}
+	.waterfalltitle{
+		text-indent: 22px;
+		background-image: url("/static/icon/indexentrytitle.png");
+		background-repeat: no-repeat;
+		background-size: 20px;
+		background-position: 0px 5px;
+
+		margin-left: 3%;
+		width: 94%;
+
+		color: #cf8f03;
+		overflow: hidden;
+ 		white-space: nowrap;
+ 		text-overflow: ellipsis;
+		 
+		margin-top: 5px;
+		font-size: 18px;
+	}
+	.waterfallentry{
+		display: flex;
+		flex-direction: column;
+		justify-content: space-around;
+
+		border-radius: 9px;
+		margin-top: 8px;
+		margin-bottom: 10px;
+		box-shadow: 0px 1px 3px rgba(158, 158, 158, 0.733);
+		height: 100px;
+		width: 90%;
+	}
+	.waterfallmain{
+		display: flex;
+		flex-direction: column;
+		justify-content:center;
+		align-items: center;
+	}
+
+
 	#hisLeft{
 		display: flex;
 		flex-direction: column;
@@ -190,7 +292,7 @@
 		border-radius: 9px;
 		/* border: 1px rgb(117, 117, 117) solid; */
 		margin-top: 8px;
-		margin-bottom: 15px;
+		margin-bottom: 0px;
 		box-shadow: 0px 1px 3px rgba(158, 158, 158, 0.733);
 
 		display: flex;
@@ -230,8 +332,15 @@
 	}
 	#hotSearchDescribe{
 		font-size: 11px;
-		margin: 0 14px;
 		color: rgb(151, 151, 151);
+		overflow: hidden;
+ 		white-space: nowrap;
+ 		text-overflow: ellipsis;
+	}
+	#hotSearchLine2{
+		display: flex;
+		margin: 5px 14px;
+		width: 90%;
 	}
 	#hotSearchLine1{
 		height: 37px;

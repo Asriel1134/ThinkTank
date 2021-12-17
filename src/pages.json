@@ -5,7 +5,8 @@
 			"style": {
 				"navigationBarTitleText": "ThinkTank",
 				"navigationBarTextStyle": "white",
-				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#cf8f03",
+				"enablePullDownRefresh": true,
 				"app-plus": {
 					"bounce": "none"
 				}
@@ -38,7 +39,7 @@
 			"style": {
 				"navigationBarTitleText": "百科",
 				"navigationBarTextStyle": "black",
-                "navigationBarBackgroundColor": "#FFFFFF",
+                "navigationBarBackgroundColor": "#F7F3E7",
 				"enablePullDownRefresh": false,
 				"navigationBarShadow": {
 					"colorType": "grey" 

@@ -2,13 +2,15 @@
 	<view class="VBox">
 		<view class="status_bar"></view>
 
-		<view class="none" v-if="collection.length==0"><text>您的收藏为空</text></view>
+		<view class="none" v-if="loading"><text>加载中……</text></view>
+
+		<view class="none" v-else-if="collection.length==0"><text>您的收藏为空</text></view>
 
 		<div v-else v-for="(item ,index) in collection" :key="index" class="main">
 			<view class="entry" :data-title="item.entry.title" @tap="openEntry">
 				<view class="title"><text>{{item.entry.title}}</text></view>
 				<view class="describe"><text>{{item.entry.describe}}</text></view>
-				<view class="date">收藏日期： {{item.date}}</view>
+				<view class="date">收藏日期: {{item.date}}</view>
 			</view>
 			<hr>
 		</div>
@@ -24,7 +26,8 @@
 		computed: mapState(['userInfo']),
 		data() {
 			return {
-				collection: []
+				collection: [],
+				loading: true
 			}
 		},
 		onLoad() {
@@ -45,6 +48,9 @@
                     fail: (e) => {
                         plus.nativeUI.toast("请求失败，请重试！")
                     },
+					complete: () => {
+						this.loading = false;
+					}
                 })
 		},
 		methods: {
@@ -72,35 +78,49 @@
 		align-items: center;
 	}
 	.describe{
-		height: 45px;
-		font-size: 14px;
-		color: rgb(85, 85, 85);
+		font-size: 12px;
+		color: rgb(116, 116, 116);
+		max-height: 35px;
+		margin-left: 3%;
+		width: 94%;
 		text-overflow: ellipsis;
 		overflow: hidden;
 	}
 	.date{
 		font-size: 10px;
+		margin-left: 3%;
 		color: rgb(151, 151, 151);
+		margin-bottom: 3px;
 	}
 	.title{
 		text-indent: 22px;
-		background-image: url("/static/icon/entrytitle.png");
+		background-image: url("/static/icon/usercollection.png");
 		background-repeat: no-repeat;
 		background-size: 18px;
-		background-position: 0px 8px;
+		background-position: 0px 5px;
 
+		margin-left: 3%;
+		width: 94%;
+
+		color: #4979ff;
+		overflow: hidden;
+ 		white-space: nowrap;
+ 		text-overflow: ellipsis;
+		 
 		margin-top: 5px;
-		font-size: 20px;
-	}
-	hr{
-		border: none;
-		height: 1px;
-		width: 100%;
-		background-color: rgba(158, 158, 158, 0.678);
+		font-size: 18px;
 	}
 	.entry{
+		display: flex;
+		flex-direction: column;
+		justify-content: space-around;
+
+		border-radius: 9px;
+		margin-top: 8px;
+		margin-bottom: 1px;
+		box-shadow: 0px 1px 3px rgba(158, 158, 158, 0.733);
 		height: 100px;
-		width: 85%;
+		width: 90%;
 	}
 	.main{
 		display: flex;
