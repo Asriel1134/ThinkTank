@@ -18,6 +18,14 @@
 				title: "",
 				text: "",
 				entryid: 0,
+				collected: false
+			}
+		},
+		onNavigationBarButtonTap(e) {
+			if (!this.collected){
+				this.addCollection();
+			} else {
+				this.deleteCollection();
 			}
 		},
 		onReady() {
@@ -29,7 +37,8 @@
 		onLoad: async function(e){
 			this.title = e.title;
 			await this.getEntry();
-			this.addHistory()
+			this.addHistory();
+			this.isCollectionExist();
 		},
 		methods: {
 			getEntry: function() {
@@ -75,6 +84,98 @@
 						fail: () => {},
 						complete: () => {}
 					});
+				}
+			},
+			addCollection() {
+				if (this.hasLogin) {
+					uni.request({
+						url: `${this.$serverUrl}/addCollection`,
+						method: 'POST',
+						header: {
+							"Content-Type": "application/x-www-form-urlencoded"
+						},
+						data: {
+							entryid: this.entryid,
+							userid: this.userInfo.userid
+						},
+						success: res => {
+							if (res.data.result == 0 || res.data.result == 1){
+								plus.nativeUI.toast("收藏成功")
+								
+								this.collected = true;
+
+								var webView = this.$mp.page.$getAppWebview();  
+
+								webView.setTitleNViewButtonStyle(0, {  
+									text: '\ue629',  
+								});  
+							}
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+				} else {
+					plus.nativeUI.toast("请先登录")
+				}
+			},
+			deleteCollection() {
+				if (this.hasLogin) {
+					uni.request({
+						url: `${this.$serverUrl}/deleteCollection`,
+						method: 'POST',
+						header: {
+							"Content-Type": "application/x-www-form-urlencoded"
+						},
+						data: {
+							entryid: this.entryid,
+							userid: this.userInfo.userid
+						},
+						success: res => {
+							if (res.data.result == 0){
+								plus.nativeUI.toast("取消收藏")
+
+								this.collected = false;
+
+								var webView = this.$mp.page.$getAppWebview();  
+
+								webView.setTitleNViewButtonStyle(0, {  
+									text: '\ue7b3',  
+								});  
+							}
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+				}
+			},
+			isCollectionExist: function() {
+				if (this.hasLogin) {
+					return new Promise((resolve, reject) => {
+						uni.request({
+							url: `${this.$serverUrl}/isCollectionExist`,
+							method: 'POST',
+							header: {
+								"Content-Type": "application/x-www-form-urlencoded"
+							},
+							data: {
+								entryid: this.entryid,
+								userid: this.userInfo.userid
+							},
+							success: res => {
+								if (res.data.result == 0){
+									this.collected = true;
+
+									var webView = this.$mp.page.$getAppWebview();  
+
+									webView.setTitleNViewButtonStyle(0, {  
+										text: '\ue629',  
+									});  
+								}
+							},
+							fail: () => {},
+							complete: () => {}
+						});
+					})
 				}
 			}
 		}

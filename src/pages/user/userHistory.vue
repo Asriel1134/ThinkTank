@@ -30,28 +30,51 @@
 				loading: true
 			}
 		},
+		onPullDownRefresh() {
+			let userid = this.userInfo.userid
+			uni.request({
+                url: `${this.$serverUrl}/getHistoryList`,
+                header: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                data: {
+                    "userid" : userid
+                },
+                method: "POST",
+                success: (e) => {
+					this.history = e.data.entries;
+                },
+                fail: (e) => {
+                    plus.nativeUI.toast("请求失败，请重试！")
+                },
+				complete: () => {
+					this.loading = false;
+					uni.stopPullDownRefresh();
+				}
+            })
+		},
 		onLoad() {
 			let userid = this.userInfo.userid
 			
 			uni.request({
-                    url: `${this.$serverUrl}/getHistoryList`,
-                    header: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    },
-                    data: {
-                        "userid" : userid
-                    },
-                    method: "POST",
-                    success: (e) => {
-						this.history = e.data.entries;
-                    },
-                    fail: (e) => {
-                        plus.nativeUI.toast("请求失败，请重试！")
-                    },
-					complete: () => {
-						this.loading = false;
-					}
-                })
+                url: `${this.$serverUrl}/getHistoryList`,
+                header: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                data: {
+                    "userid" : userid
+                },
+                method: "POST",
+                success: (e) => {
+					this.history = e.data.entries;
+                },
+                fail: (e) => {
+                    plus.nativeUI.toast("请求失败，请重试！")
+                },
+				complete: () => {
+					this.loading = false;
+				}
+            })
 		},
 		methods: {
 			openEntry(e) {

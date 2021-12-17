@@ -45,6 +45,13 @@
 					"colorType": "grey" 
 				},
 				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "\ue7b3",
+							"fontSrc": "/static/iconfont/iconfont.ttf",
+							"fontSize": "22px"
+						}]
+					},
 					"bounce": "none"
 				}
 			}
@@ -109,7 +116,7 @@
 				"navigationBarTitleText": "我的收藏",
 				"navigationBarTextStyle": "white",
                 "navigationBarBackgroundColor": "#6d91f2",
-				"enablePullDownRefresh": false,
+				"enablePullDownRefresh": true,
 				"app-plus": {
 					"bounce": "none"
 				}
@@ -120,7 +127,7 @@
 				"navigationBarTitleText": "我的足迹",
 				"navigationBarTextStyle": "white",
                 "navigationBarBackgroundColor": "#6d91f2",
-				"enablePullDownRefresh": false,
+				"enablePullDownRefresh": true,
 				"app-plus": {
 					"bounce": "none"
 				}
@@ -131,7 +138,7 @@
 				"navigationBarTitleText": "我的词条",
 				"navigationBarTextStyle": "white",
                 "navigationBarBackgroundColor": "#6d91f2",
-				"enablePullDownRefresh": false,
+				"enablePullDownRefresh": true,
 				"app-plus": {
 					"bounce": "none"
 				}

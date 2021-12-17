@@ -117,7 +117,7 @@
 				success: res => {
 					this.waterfall = res.data.entry;
 				},
-				fail: () => {console.log(1);},
+				fail: () => {},
 				complete: () => {}
 			});
 			uni.request({
@@ -129,7 +129,7 @@
 					this.swiperInfo = res.data.swiper;
 					this.hotSearchInfo = res.data.hotSearch,
 					this.historyInfo = res.data.historyInfo
-					this.searchText = "大家正在搜索：" + res.data.searchText
+					this.searchText = "大家正在搜索:" + res.data.searchText
 				},
 				fail: () => {console.log(1);},
 				complete: () => {}
@@ -162,7 +162,7 @@
 					this.swiperInfo = res.data.swiper;
 					this.hotSearchInfo = res.data.hotSearch,
 					this.historyInfo = res.data.historyInfo
-					this.searchText = "大家正在搜索：" + res.data.searchText
+					this.searchText = "大家正在搜索:" + res.data.searchText
 				},
 				fail: () => {console.log(1);},
 				complete: () => {}
