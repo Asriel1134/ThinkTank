@@ -17,6 +17,8 @@
 				<swiper-item v-for="(item ,index) in swiperInfo" :key="index">
 					<view class="swiper-item" :data-title="item.title" @tap="openEntry">
 						<image class="swiper-image" :src="item.image" mode="aspectFill"></image>
+						<image class="swiper-background" src="../../static/swiper/swiperbackground.png" mode="scaleToFill"></image>
+						<text class="swiper-text">{{item.title}}</text>
 					</view>
 				</swiper-item>
 			</swiper>
@@ -410,14 +412,29 @@
 		width: 90%;
 		border-radius: 9px;
 	}
-	.swiper-item{
-		text-align: center;
-	}
 	.swiper-image{
 		border-radius: 9px;
 		height: 215px;
 		width: 100%;
 		/* margin: 0 20px 0 0; */
+		z-index: 1;
+		position: absolute;
+	}
+	.swiper-text{
+		z-index: 3;
+		position: absolute;
+		left: 12px;
+		top: 175px;
+		font-size: 17px;
+		color: #ffffff;
+	}
+	.swiper-background{
+		border-radius: 9px;
+		height: 215px;
+		width: 100%;
+		/* margin: 0 20px 0 0; */
+		z-index: 2;
+		position: absolute;
 	}
 	.subtitle{
 		display: flex;
@@ -429,7 +446,6 @@
 		margin-left: 5%;
 		margin-bottom: 5px;
 	}
-
 	.content {
 		display: flex;
 		flex-direction: column;
