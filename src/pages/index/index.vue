@@ -45,7 +45,7 @@
 			</view>
 		</view>
 		<!-- 历史上的今天 -->
-		<view class="subtitle"><text>历史上的今天</text></view>
+		<view class="subtitle"><text>今天看个啥</text></view>
 		<view class="content">
 			<view class="history"  :data-title="historyInfo.title" @tap="openEntry">
 				<view id="hisLeft">

@@ -2,6 +2,8 @@
 	<view class="VBox">
 		<view class="status_bar"></view>
 		<!-- <text>{{title}}</text> -->
+		<view v-if="loading" class="info">加载中……</view>
+		<view v-else-if="!exist" class="info">查无此人</view>
 		<rich-text :nodes="text"></rich-text>
 	</view>
 </template>
@@ -18,7 +20,9 @@
 				title: "",
 				text: "",
 				entryid: 0,
-				collected: false
+				collected: false,
+				loading: true,
+				exist: true
 			}
 		},
 		onNavigationBarButtonTap(e) {
@@ -50,20 +54,26 @@
 							title: this.title
 						},
 						success: res => {
-							this.title = res.data.entryInfo.title,
-							this.text = res.data.entryInfo.text
-							this.entryid = res.data.entryInfo.entryid
-							if(this.text!= null){
-								this.text = this.text.replace("float:right",' ');
-								this.text = this.text.replace("float: right",' ');
-								this.text = this.text.replace("width:600px",'width:300px');
+							if (res.data.result == 0){
+								this.title = res.data.entryInfo.title,
+								this.text = res.data.entryInfo.text
+								this.entryid = res.data.entryInfo.entryid
+								if(this.text!= null){
+									this.text = this.text.replace("float:right;",' ');
+									this.text = this.text.replace("float: right;",' ');
+									this.text = this.text.replace("width:600px",'width:300px');
+								}
+							} else {
+								this.exist = false
 							}
 							resolve(res)
 						},
 						fail: (err) => {
 							reject(err)
 						},
-						complete: () => {}
+						complete: () => {
+							this.loading = false;
+						}
 					});
 				})
 			},
@@ -183,7 +193,19 @@
 </script>
 
 <style>
-table {
+	.info{
+		font-size: 20px;
+		color: #cf8f03;
+		display: flex;
+		width: 100%;
+		height: 300px;
+		justify-content:center;
+		align-items: center;
+	}
+	page{
+		background: #F7F3E7;
+	}
+	table {
 		float: none;
 	}
 	p {
@@ -201,12 +223,12 @@ table {
 		line-height: 24px;
 		zoom: 1;
 	}
-	
 	rich-text div {
 		max-width: 90vw;
 	}
 	rich-text img {
 		max-width: 80vw;
+		margin: 0 auto;   
 	}
 	rich-text span {
 		padding-left: 2px;
@@ -222,14 +244,14 @@ table {
 		border-collapse: collapse;
 		max-width: 85vw;
 		/* margin:0 10px; */
-		margin: auto;
+		margin: auto !important;
 		display: table;
 		font-size: 89%;
-		text-align: center;
+		text-align: center !important;
 		max-width: 100%;
 		/* background-color: rgba(251,251,251,0.8); */
+		float: none !important;
 	}
-	
 	rich-text .infobox {
 		/* float: none; */
 		display: table;
@@ -243,17 +265,22 @@ table {
 	}
 	
 	rich-text .image img{
-		padding-left: 20px;
+		/* padding-left: 20px; */
 		max-width: 70vw;
 		max-height: 300px;
+		margin: 0 auto;
 	}
-	
+	rich-text .tumb {
+		padding-left: 20px;
+	}
+	rich-text .tumbimage {
+		padding-left: 20px;
+	}
 	rich-text th {
 		background-color: #26ca9b;
 		max-width: 85vw;
 		text-align: center;
 	}
-	
 	rich-text tr {
 		display: table-row;
 		max-width: 85vw;
@@ -299,7 +326,6 @@ table {
 		font-size: 0.95em;
 		margin-top: 1em;
 	}
-	
 	rich-text dl {
 		margin-left: 25px;
 		max-width: 70%;
@@ -321,10 +347,9 @@ table {
 		/* background-color: #6d91f2; */
 		width: 100%;
 		background-color: #F7F3E7;
-		/* height: 195px; */
 	}
 	.status_bar {
-	height: 5px;
-	width: 100%;
+		height: 5px;
+		width: 100%;
 	}
 </style>
