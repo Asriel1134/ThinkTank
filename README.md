@@ -1,22 +1,5 @@
-# hotwordwiki
+# ThinkTank 梗知识百科
 
-## Project setup
-```
-npm install
-```
+## 使用方法
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-
-```
-npm run build
-```
-
-### Customize configuration
-
-See [Configuration Reference](https://cli.vuejs.org/config/)
-test
+点击右侧最新发行版，下载APK包到手机安装即可。
